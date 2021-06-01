@@ -36,14 +36,14 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              state is AddEditNoteLoadingState
+              state.loading
                   ? appName
                   : state.note != null
                       ? addEditNoteEditTitle
                       : addEditNoteAddTitle,
             ),
           ),
-          body: state is AddEditNoteLoadingState
+          body: state.loading
               ? Center(
                   child: SizedBox(
                     height: 48,

@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_bloc/presentation/add_edit_note/add_edit_note_route.dart';
 import 'package:nuvigator/next.dart';
 
+import '../add_edit_note/add_edit_note_route.dart';
 import '../shared/route_helper.dart';
 import 'bloc/notes_list_bloc.dart';
 import 'notes_list_screen.dart';
