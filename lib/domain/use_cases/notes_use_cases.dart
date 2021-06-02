@@ -1,7 +1,7 @@
 import '../models/note.dart';
 
 abstract class NotesUseCases {
-  Stream<List<Note>> getNotes({bool ignoreLocal = false});
+  Stream<List<Note>> getNotes({bool ignoreCache = false});
 
   Future<Note> getNote(String id);
 

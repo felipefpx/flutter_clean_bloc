@@ -7,6 +7,8 @@ abstract class BaseBloc<S extends BaseState, E extends BaseEvent<S, Bloc>>
 
   @override
   Stream<S> mapEventToState(E event) => event.apply(this);
+
+  void yield(S state) => super.emit(state);
 }
 
 abstract class BaseEvent<S extends BaseState, B extends Bloc> {

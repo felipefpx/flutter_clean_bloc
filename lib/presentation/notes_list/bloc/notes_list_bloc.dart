@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../../domain/models/note.dart';
@@ -13,4 +16,11 @@ class NotesListBloc extends BaseBloc<NotesListState, NotesListEvent> {
         super(const NotesListInitialState());
 
   final NotesUseCases _notesUseCases;
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    debugPrint(error.toString());
+    yield(NotesListErrorState(notes: state.notes));
+  }
 }
