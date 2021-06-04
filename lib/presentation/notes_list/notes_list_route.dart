@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nuvigator/next.dart';
@@ -19,6 +21,7 @@ class NotesListRoute extends NuRoute {
       create: (context) => NotesListBloc(notesUseCases: context.read())
         ..add(const NotesListLoadEvent()),
       child: NotesListScreen(
+        onClose: () => exit(0),
         onAddNewNote: () =>
             Nuvigator.of(context)?.open(addNoteDeepLink(includeSchema: true)),
         onEditNote: (id) => Nuvigator.of(context)

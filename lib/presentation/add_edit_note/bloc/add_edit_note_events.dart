@@ -19,8 +19,10 @@ class AddEditNoteLoadEvent extends AddEditNoteEvent {
         yield AddEditNoteLoadedState(note: result);
       } catch (e) {
         debugPrint(e.toString());
-        yield AddEditNoteErrorState(onRetry: () => bloc.add(this));
+        yield AddEditNoteErrorState();
       }
+    } else {
+      yield AddEditNoteInitialState(loading: false);
     }
   }
 }
@@ -65,7 +67,7 @@ class AddEditNoteSubmitEvent extends AddEditNoteEvent {
         yield AddEditNoteSavedState(note: result);
       } catch (e) {
         debugPrint(e.toString());
-        yield AddEditNoteErrorState(onRetry: () => bloc.add(this));
+        yield AddEditNoteErrorState();
       }
     }
   }

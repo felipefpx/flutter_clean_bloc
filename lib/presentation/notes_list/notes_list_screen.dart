@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app.dart';
+import '../shared/widgets/bottom_sheet.dart';
 import 'bloc/notes_list_bloc.dart';
 import 'notes_list_strings.dart';
 
@@ -9,16 +10,26 @@ class NotesListScreen extends StatelessWidget {
   NotesListScreen({
     required this.onAddNewNote,
     required this.onEditNote,
+    required this.onClose,
   });
 
+  final VoidCallback onClose;
   final Future<Object?>? Function() onAddNewNote;
   final Future<Object?>? Function(String) onEditNote;
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<NotesListBloc, NotesListState>(
-      listener: (context, state) {
-        if (state is NotesListErrorState) {}
+      listener: (context, state) async {
+        if (state is NotesListErrorState) {
+          await BottomSheetWidget.show(
+            title: noteListErrorTitle,
+            message: noteListErrorMessage,
+            actionLabel: noteListErrorAction,
+            context: context,
+          );
+          onClose();
+        }
       },
       child: BlocBuilder<NotesListBloc, NotesListState>(
         builder: (context, state) => state.toWidget(

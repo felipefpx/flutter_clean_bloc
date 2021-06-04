@@ -16,11 +16,4 @@ class NotesListBloc extends BaseBloc<NotesListState, NotesListEvent> {
         super(const NotesListInitialState());
 
   final NotesUseCases _notesUseCases;
-
-  @override
-  void onError(Object error, StackTrace stackTrace) {
-    super.onError(error, stackTrace);
-    debugPrint(error.toString());
-    yield(NotesListErrorState(notes: state.notes));
-  }
 }

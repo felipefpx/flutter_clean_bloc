@@ -39,12 +39,12 @@ void main() {
     });
 
     blocTest<AddEditNoteBloc, AddEditNoteState>(
-      'when loading without id, should do nothing',
+      'when loading without id, should disable loading',
       build: () => AddEditNoteBloc(notesUseCases: useCases),
       act: (bloc) => bloc.add(AddEditNoteLoadEvent()),
       expect: () {
         verifyNever(() => useCases.getNote(any()));
-        return [];
+        return [AddEditNoteInitialState(loading: false)];
       },
     );
 
@@ -147,7 +147,7 @@ void main() {
         verify(() => useCases.getNote(note.id)).called(1);
         return [
           AddEditNoteLoadingState(),
-          AddEditNoteErrorState(onRetry: () {}),
+          AddEditNoteErrorState(),
         ];
       },
     );
@@ -168,7 +168,7 @@ void main() {
         ).called(1);
         return [
           AddEditNoteLoadingState(),
-          AddEditNoteErrorState(onRetry: () {}),
+          AddEditNoteErrorState(),
         ];
       },
     );
@@ -227,7 +227,7 @@ void main() {
         ).called(1);
         return [
           AddEditNoteLoadingState(),
-          AddEditNoteErrorState(onRetry: () {}),
+          AddEditNoteErrorState(),
         ];
       },
     );
