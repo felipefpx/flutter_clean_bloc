@@ -31,9 +31,9 @@ class AddEditNoteSavedState extends AddEditNoteState {
 
 class AddEditNoteInvalidInfoState extends AddEditNoteState {
   const AddEditNoteInvalidInfoState({
-    required Note? note,
     required this.invalidTitle,
     required this.invalidContent,
+    Note? note,
   }) : super(loading: false, note: note);
 
   final bool invalidTitle, invalidContent;
