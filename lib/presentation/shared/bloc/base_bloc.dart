@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-abstract class BaseBloc<S extends BaseState, E extends BaseEvent<S, Bloc>>
+abstract class BaseBloc<E extends BaseEvent<S, Bloc>, S extends BaseState>
     extends Bloc<E, S> {
   BaseBloc(S initialState) : super(initialState);
 

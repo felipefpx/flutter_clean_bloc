@@ -7,7 +7,7 @@ import '../../shared/bloc/base_bloc.dart';
 part 'add_edit_note_events.dart';
 part 'add_edit_note_states.dart';
 
-class AddEditNoteBloc extends BaseBloc<AddEditNoteState, AddEditNoteEvent> {
+class AddEditNoteBloc extends BaseBloc<AddEditNoteEvent, AddEditNoteState> {
   AddEditNoteBloc({required NotesUseCases notesUseCases})
       : _notesUseCases = notesUseCases,
         super(const AddEditNoteInitialState());

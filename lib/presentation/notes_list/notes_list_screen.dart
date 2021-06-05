@@ -19,7 +19,8 @@ class NotesListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<NotesListBloc, NotesListState>(
+    context.read<NotesListBloc>();
+    return BlocConsumer<NotesListBloc, NotesListState>(
       listener: (context, state) async {
         if (state is NotesListErrorState) {
           await BottomSheetWidget.show(
@@ -31,12 +32,10 @@ class NotesListScreen extends StatelessWidget {
           onClose();
         }
       },
-      child: BlocBuilder<NotesListBloc, NotesListState>(
-        builder: (context, state) => state.toWidget(
-          context: context,
-          onAddNewNote: onAddNewNote,
-          onEditNote: onEditNote,
-        ),
+      builder: (context, state) => state.toWidget(
+        context: context,
+        onAddNewNote: onAddNewNote,
+        onEditNote: onEditNote,
       ),
     );
   }

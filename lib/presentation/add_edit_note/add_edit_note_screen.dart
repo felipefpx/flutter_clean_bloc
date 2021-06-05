@@ -9,10 +9,10 @@ import 'bloc/add_edit_note_bloc.dart';
 class AddEditNoteScreen extends StatefulWidget {
   const AddEditNoteScreen({
     required this.onSaved,
-    required this.onClose,
+    required this.onBack,
   });
 
-  final VoidCallback onSaved, onClose;
+  final VoidCallback onSaved, onBack;
 
   @override
   State<StatefulWidget> createState() => _AddEditNoteScreenState();
@@ -24,7 +24,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AddEditNoteBloc, AddEditNoteState>(
+    return BlocConsumer<AddEditNoteBloc, AddEditNoteState>(
       listener: (context, state) async {
         if (state is AddEditNoteSavedState) {
           widget.onSaved();
@@ -37,11 +37,10 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
             actionLabel: addEditNoteErrorAction,
             context: context,
           );
-          widget.onClose();
+          widget.onBack();
         }
       },
-      child: BlocBuilder<AddEditNoteBloc, AddEditNoteState>(
-          builder: (context, state) {
+      builder: (context, state) {
         if (state is AddEditNoteLoadedState && state.note != null) {
           _titleTextController.text = state.note!.title;
           _contentTextController.text = state.note!.content;
@@ -108,7 +107,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
                   },
                 ),
         );
-      }),
+      },
     );
   }
 

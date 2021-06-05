@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_clean_bloc/presentation/shared/bloc/base_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class _FakeBloc extends BaseBloc<_FakeState, _FakeEvent> {
+class _FakeBloc extends BaseBloc<_FakeEvent, _FakeState> {
   _FakeBloc() : super(const _FakeInitialState());
 }
 

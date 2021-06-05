@@ -36,7 +36,7 @@ class _AddEditNoteRoute extends NuRoute {
           id: settings.pathParameters['id']?.toString(),
         )),
       child: AddEditNoteScreen(
-        onClose: () {
+        onBack: () {
           Nuvigator.of(context)?.pop();
         },
         onSaved: () {
