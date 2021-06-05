@@ -34,15 +34,7 @@ void main() {
   });
 
   testWidgets('should display the loading', (tester) async {
-    whenListen<AddEditNoteState>(
-      mockBloc,
-      Stream.fromIterable(
-        [
-          AddEditNoteLoadingState(),
-        ],
-      ),
-      initialState: AddEditNoteInitialState(),
-    );
+    when(() => mockBloc.state).thenReturn(AddEditNoteLoadingState());
 
     await AddEditNoteScreenRobot.launch(
       tester,
@@ -60,13 +52,8 @@ void main() {
   });
 
   testWidgets('should prepare a new form and create a note', (tester) async {
-    whenListen<AddEditNoteState>(
-      mockBloc,
-      Stream.fromIterable(
-        [AddEditNoteInitialState(loading: false)],
-      ),
-      initialState: AddEditNoteInitialState(),
-    );
+    when(() => mockBloc.state)
+        .thenReturn(AddEditNoteInitialState(loading: false));
 
     await AddEditNoteScreenRobot.launch(
       tester,
@@ -83,16 +70,7 @@ void main() {
   });
 
   testWidgets('should load existing note and update it', (tester) async {
-    whenListen<AddEditNoteState>(
-      mockBloc,
-      Stream.fromIterable(
-        [
-          AddEditNoteLoadingState(),
-          AddEditNoteLoadedState(note: note),
-        ],
-      ),
-      initialState: AddEditNoteInitialState(),
-    );
+    when(() => mockBloc.state).thenReturn(AddEditNoteLoadedState(note: note));
 
     await AddEditNoteScreenRobot.launch(
       tester,
