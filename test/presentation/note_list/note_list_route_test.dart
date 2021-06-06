@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('When navigating to route list', () {
-    test('', () {});
-  });
+  test('When opened the route list should display it', () {});
 }
