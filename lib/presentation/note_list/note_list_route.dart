@@ -20,7 +20,7 @@ class NoteListRoute extends NuRoute {
     return BlocProvider<NoteListBloc>(
       create: (context) => NoteListBloc(notesUseCases: context.read())
         ..add(const NoteListLoadEvent()),
-      child: NotesListScreen(
+      child: NoteListScreen(
         onBack: () => exit(0),
         onAddNewNote: () =>
             Nuvigator.of(context)?.open(addNoteDeepLink(includeSchema: true)),

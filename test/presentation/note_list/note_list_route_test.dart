@@ -1,5 +1,5 @@
-import 'package:flutter_clean_bloc/presentation/notes_list/note_list_route.dart';
-import 'package:flutter_clean_bloc/presentation/notes_list/note_list_screen.dart';
+import 'package:flutter_clean_bloc/presentation/note_list/note_list_route.dart';
+import 'package:flutter_clean_bloc/presentation/note_list/note_list_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -26,6 +26,6 @@ void main() {
 
   testWidgets('When opened the route list should display it', (tester) async {
     await launchRoute(tester, route, mockUseCases);
-    expect(find.byType(NotesListScreen), findsOneWidget);
+    expect(find.byType(NoteListScreen), findsOneWidget);
   });
 }

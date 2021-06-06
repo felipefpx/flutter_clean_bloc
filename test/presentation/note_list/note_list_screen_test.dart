@@ -1,5 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter_clean_bloc/presentation/notes_list/bloc/note_list_bloc.dart';
+import 'package:flutter_clean_bloc/presentation/note_list/bloc/note_list_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

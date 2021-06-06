@@ -10,8 +10,8 @@ import 'views/note_list_empty_view.dart';
 import 'views/note_list_shimmering_view.dart';
 import 'views/note_list_view.dart';
 
-class NotesListScreen extends StatelessWidget {
-  const NotesListScreen({
+class NoteListScreen extends StatelessWidget {
+  const NoteListScreen({
     required this.onAddNewNote,
     required this.onEditNote,
     required this.onBack,

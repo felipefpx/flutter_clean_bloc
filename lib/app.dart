@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'data/data_providers.dart';
 import 'presentation/add_edit_note/add_edit_note_route.dart';
-import 'presentation/notes_list/note_list_route.dart';
+import 'presentation/note_list/note_list_route.dart';
 
 const appName = 'Flutter Clean-BloC';
 

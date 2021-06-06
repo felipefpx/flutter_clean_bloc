@@ -15,8 +15,8 @@ class NotesRepository extends NotesUseCases {
   final NotesLocalDataSource _notesLocalDataSource;
 
   @override
-  Stream<List<Note>> getNotes({bool ignoreCache = false}) async* {
-    if (!ignoreCache) {
+  Stream<List<Note>> getNotes({bool ensureUpdated = false}) async* {
+    if (!ensureUpdated) {
       try {
         final localNotes = await _notesLocalDataSource.getNotes();
         yield localNotes.toNotes();

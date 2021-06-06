@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_clean_bloc/domain/models/note.dart';
 import 'package:flutter_clean_bloc/domain/use_cases/notes_use_cases.dart';
-import 'package:flutter_clean_bloc/presentation/notes_list/bloc/note_list_bloc.dart';
+import 'package:flutter_clean_bloc/presentation/note_list/bloc/note_list_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../fakes.dart';
@@ -17,12 +17,13 @@ void main() {
       localNotes = fakeNotes;
       remoteNotes = fakeNotes;
 
-      when(() => useCases.getNotes(ignoreCache: false)).thenAnswer((_) async* {
+      when(() => useCases.getNotes(ensureUpdated: false))
+          .thenAnswer((_) async* {
         yield localNotes;
         yield remoteNotes;
       });
 
-      when(() => useCases.getNotes(ignoreCache: true)).thenAnswer((_) async* {
+      when(() => useCases.getNotes(ensureUpdated: true)).thenAnswer((_) async* {
         yield remoteNotes;
       });
 
@@ -38,7 +39,7 @@ void main() {
       build: () => NoteListBloc(notesUseCases: useCases),
       act: (bloc) => bloc.add(NoteListLoadEvent()),
       expect: () {
-        verify(() => useCases.getNotes(ignoreCache: false)).called(1);
+        verify(() => useCases.getNotes(ensureUpdated: false)).called(1);
         return [
           NoteListLoadingState(),
           NoteListLoadingState(notes: localNotes, shimmering: false),
@@ -54,7 +55,7 @@ void main() {
       act: (bloc) => bloc.add(DeleteNoteEvent(localNotes.first.id)),
       expect: () {
         verify(() => useCases.deleteNote(localNotes.first.id)).called(1);
-        verify(() => useCases.getNotes(ignoreCache: true)).called(1);
+        verify(() => useCases.getNotes(ensureUpdated: true)).called(1);
         return [
           NoteListLoadingState(),
           NoteListLoadedState(notes: remoteNotes),
@@ -69,10 +70,10 @@ void main() {
       localNotes = fakeNotes;
       remoteNotes = fakeNotes;
 
-      when(() => useCases.getNotes(ignoreCache: false))
+      when(() => useCases.getNotes(ensureUpdated: false))
           .thenAnswer((_) => Stream.error(Exception('Failed')));
 
-      when(() => useCases.getNotes(ignoreCache: true))
+      when(() => useCases.getNotes(ensureUpdated: true))
           .thenAnswer((_) => Stream.error(Exception('Failed')));
 
       when(() => useCases.deleteNote(any())).thenAnswer((_) async {
@@ -89,7 +90,7 @@ void main() {
       build: () => NoteListBloc(notesUseCases: useCases),
       act: (bloc) => bloc.add(NoteListLoadEvent()),
       expect: () {
-        verify(() => useCases.getNotes(ignoreCache: false)).called(1);
+        verify(() => useCases.getNotes(ensureUpdated: false)).called(1);
         return [
           NoteListLoadingState(),
           NoteListErrorState(notes: []),
@@ -103,7 +104,7 @@ void main() {
       act: (bloc) => bloc.add(DeleteNoteEvent(localNotes.first.id)),
       expect: () {
         verify(() => useCases.deleteNote(localNotes.first.id)).called(1);
-        verifyNever(() => useCases.getNotes(ignoreCache: true));
+        verifyNever(() => useCases.getNotes(ensureUpdated: true));
         return [
           NoteListLoadingState(),
           NoteListErrorState(notes: []),
