@@ -1,6 +1,7 @@
 import 'package:faker/faker.dart';
 import 'package:flutter_clean_bloc/data/models/external_note.dart';
 import 'package:flutter_clean_bloc/domain/models/note.dart';
+import 'package:http/http.dart' as http;
 
 Faker get faker => Faker();
 
@@ -20,3 +21,5 @@ List<Note> get fakeNotes => [fakeNote, fakeNote, fakeNote];
 
 List<ExternalNote> get fakeExternalNotes =>
     [fakeExternalNote, fakeExternalNote, fakeExternalNote];
+
+http.Response fakeResponse(String body, int code) => http.Response(body, code);

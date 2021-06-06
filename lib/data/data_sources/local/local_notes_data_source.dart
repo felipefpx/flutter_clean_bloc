@@ -6,4 +6,6 @@ abstract class NotesLocalDataSource {
   Future<List<ExternalNote>> saveNotes(List<ExternalNote> notes);
 }
 
-class LocalNotesCacheIsEmpty implements Exception {}
+class LocalNotesCacheIsEmpty implements Exception {
+  const LocalNotesCacheIsEmpty();
+}
