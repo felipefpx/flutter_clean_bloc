@@ -184,6 +184,74 @@ void main() {
       expect(onBackCounter, 1);
     });
 
+    testWidgets('should display invalid title', (tester) async {
+      final mockBloc = MockAddEditNoteBloc();
+      var onSavedCounter = 0, onBackCounter = 0;
+
+      whenListen<AddEditNoteState>(
+        mockBloc,
+        Stream.fromIterable([
+          AddEditNoteInvalidInfoState(invalidTitle: true, invalidContent: false)
+        ]),
+        initialState: AddEditNoteInitialState(),
+      );
+
+      await AddEditNoteScreenRobot.launch(
+        tester,
+        bloc: mockBloc,
+        onSaved: () {
+          onSavedCounter++;
+        },
+        onBack: () {
+          onBackCounter++;
+        },
+      );
+      await tester.pumpAndSettle();
+
+      AddEditNoteScreenRobot.expectScreenVisible();
+      AddEditNoteScreenRobot.expectInvalidInfoError(
+        invalidTitle: true,
+        invalidContent: false,
+      );
+
+      expect(onSavedCounter, 0);
+      expect(onBackCounter, 0);
+    });
+
+    testWidgets('should display invalid content', (tester) async {
+      final mockBloc = MockAddEditNoteBloc();
+      var onSavedCounter = 0, onBackCounter = 0;
+
+      whenListen<AddEditNoteState>(
+        mockBloc,
+        Stream.fromIterable([
+          AddEditNoteInvalidInfoState(invalidTitle: false, invalidContent: true)
+        ]),
+        initialState: AddEditNoteInitialState(),
+      );
+
+      await AddEditNoteScreenRobot.launch(
+        tester,
+        bloc: mockBloc,
+        onSaved: () {
+          onSavedCounter++;
+        },
+        onBack: () {
+          onBackCounter++;
+        },
+      );
+      await tester.pumpAndSettle();
+
+      AddEditNoteScreenRobot.expectScreenVisible();
+      AddEditNoteScreenRobot.expectInvalidInfoError(
+        invalidTitle: false,
+        invalidContent: true,
+      );
+
+      expect(onSavedCounter, 0);
+      expect(onBackCounter, 0);
+    });
+
     testWidgets('should run saved callback when saved a note', (tester) async {
       final mockBloc = MockAddEditNoteBloc();
       final note = fakeNote;

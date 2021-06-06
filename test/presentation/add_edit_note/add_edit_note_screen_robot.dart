@@ -84,6 +84,20 @@ class AddEditNoteScreenRobot {
     expect(find.text(addEditNoteErrorAction), findsOneWidget);
   }
 
+  static void expectInvalidInfoError({
+    required bool invalidTitle,
+    required bool invalidContent,
+  }) {
+    expect(
+      find.text(addEditNoteInvalidTitle),
+      invalidTitle ? findsOneWidget : findsNothing,
+    );
+    expect(
+      find.text(addEditNoteInvalidContent),
+      invalidContent ? findsOneWidget : findsNothing,
+    );
+  }
+
   static Future<void> typeTitle(WidgetTester tester, String title) async {
     await tester.enterText(find.text(addEditNoteTitleHint), title);
     await tester.pumpAndSettle();

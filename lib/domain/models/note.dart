@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Note extends Equatable {
-  Note({
+  const Note({
     required this.id,
     required this.title,
     required this.content,
