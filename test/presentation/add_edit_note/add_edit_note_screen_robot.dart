@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_clean_bloc/app.dart';
 import 'package:flutter_clean_bloc/domain/models/note.dart';
-import 'package:flutter_clean_bloc/presentation/add_Edit_note/bloc/add_edit_note_bloc.dart';
+import 'package:flutter_clean_bloc/presentation/add_edit_note/bloc/add_edit_note_bloc.dart';
 import 'package:flutter_clean_bloc/presentation/add_edit_note/add_edit_note_screen.dart';
 import 'package:flutter_clean_bloc/presentation/add_edit_note/add_edit_note_strings.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -26,7 +27,7 @@ class AddEditNoteScreenRobot {
         ),
       ),
     );
-    await tester.pumpAndSettle();
+    await tester.pump();
   }
 
   static void expectScreenVisible({Note? note, bool loading = false}) {
@@ -36,35 +37,44 @@ class AddEditNoteScreenRobot {
     );
 
     expect(
-      find.text(note == null ? addEditNoteAddTitle : addEditNoteEditTitle),
+      find.text(
+        loading
+            ? appName
+            : note != null
+                ? addEditNoteEditTitle
+                : addEditNoteAddTitle,
+      ),
       findsOneWidget,
     );
 
-    if (note != null) {
-      expect(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is TextFormField && widget.controller!.text == note.title,
-        ),
-        findsOneWidget,
-      );
-      expect(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is TextFormField &&
-              widget.controller!.text == note.content,
-        ),
-        findsOneWidget,
-      );
-    } else {
-      expect(
-        find.text(addEditNoteTitleHint),
-        findsOneWidget,
-      );
-      expect(
-        find.text(addEditNoteContentHint),
-        findsOneWidget,
-      );
+    if (!loading) {
+      if (note != null) {
+        expect(
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is TextFormField &&
+                widget.controller!.text == note.title,
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is TextFormField &&
+                widget.controller!.text == note.content,
+          ),
+          findsOneWidget,
+        );
+      } else {
+        expect(
+          find.text(addEditNoteTitleHint),
+          findsOneWidget,
+        );
+        expect(
+          find.text(addEditNoteContentHint),
+          findsOneWidget,
+        );
+      }
     }
   }
 
@@ -85,7 +95,7 @@ class AddEditNoteScreenRobot {
   }
 
   static Future<void> tapOnBack(WidgetTester tester) async {
-    await tester.tap(find.byIcon(Icons.arrow_back));
+    await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
   }
 
