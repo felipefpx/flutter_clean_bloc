@@ -10,106 +10,177 @@ class MockAddEditNoteBloc extends MockBloc<AddEditNoteEvent, AddEditNoteState>
     implements AddEditNoteBloc {}
 
 void main() {
-  late MockAddEditNoteBloc mockBloc;
-  late int onSavedCounter;
-  late int onBackCounter;
-  final note = fakeNote;
+  group('With add edit note screen', () {
+    setUp(() {
+      registerFallbackValue<AddEditNoteState>(AddEditNoteInitialState());
+      registerFallbackValue<AddEditNoteEvent>(AddEditNoteLoadEvent());
+    });
 
-  void _onSaved() {
-    onSavedCounter++;
-  }
+    testWidgets('should display the initial state', (tester) async {
+      final mockBloc = MockAddEditNoteBloc();
+      var onSavedCounter = 0, onBackCounter = 0;
 
-  void _onBack() {
-    onBackCounter++;
-  }
+      whenListen<AddEditNoteState>(
+        mockBloc,
+        Stream.fromIterable([]),
+        initialState: AddEditNoteInitialState(),
+      );
 
-  setUp(() {
-    registerFallbackValue<AddEditNoteState>(AddEditNoteInitialState());
-    registerFallbackValue<AddEditNoteEvent>(AddEditNoteLoadEvent());
+      await AddEditNoteScreenRobot.launch(
+        tester,
+        bloc: mockBloc,
+        onSaved: () {
+          onSavedCounter++;
+        },
+        onBack: () {
+          onBackCounter++;
+        },
+      );
 
-    mockBloc = MockAddEditNoteBloc();
+      AddEditNoteScreenRobot.expectScreenVisible(loading: true);
 
-    onSavedCounter = 0;
-    onBackCounter = 0;
-  });
+      expect(onSavedCounter, 0);
+      expect(onBackCounter, 0);
+    });
 
-  testWidgets('should display the initial state', (tester) async {
-    whenListen<AddEditNoteState>(
-      mockBloc,
-      Stream.fromIterable([]),
-      initialState: AddEditNoteInitialState(),
-    );
+    testWidgets('should display the loading', (tester) async {
+      final mockBloc = MockAddEditNoteBloc();
+      var onSavedCounter = 0, onBackCounter = 0;
 
-    await AddEditNoteScreenRobot.launch(
-      tester,
-      bloc: mockBloc,
-      onSaved: _onSaved,
-      onBack: _onBack,
-    );
+      whenListen<AddEditNoteState>(
+        mockBloc,
+        Stream.fromIterable([AddEditNoteLoadingState()]),
+        initialState: AddEditNoteInitialState(),
+      );
 
-    AddEditNoteScreenRobot.expectScreenVisible(loading: true);
+      await AddEditNoteScreenRobot.launch(
+        tester,
+        bloc: mockBloc,
+        onSaved: () {
+          onSavedCounter++;
+        },
+        onBack: () {
+          onBackCounter++;
+        },
+      );
 
-    expect(onSavedCounter, 0);
-    expect(onBackCounter, 0);
-  });
+      AddEditNoteScreenRobot.expectScreenVisible(loading: true);
 
-  testWidgets('should display the loading', (tester) async {
-    whenListen<AddEditNoteState>(
-      mockBloc,
-      Stream.fromIterable([AddEditNoteLoadingState()]),
-      initialState: AddEditNoteInitialState(),
-    );
+      expect(onSavedCounter, 0);
+      expect(onBackCounter, 0);
+    });
 
-    await AddEditNoteScreenRobot.launch(
-      tester,
-      bloc: mockBloc,
-      onSaved: _onSaved,
-      onBack: _onBack,
-    );
+    testWidgets('should prepare a new form and create a note', (tester) async {
+      final mockBloc = MockAddEditNoteBloc();
+      var onSavedCounter = 0, onBackCounter = 0;
 
-    AddEditNoteScreenRobot.expectScreenVisible(loading: true);
+      whenListen<AddEditNoteState>(
+        mockBloc,
+        Stream.fromIterable([AddEditNoteInitialState(loading: false)]),
+        initialState: AddEditNoteInitialState(),
+      );
 
-    expect(onSavedCounter, 0);
-    expect(onBackCounter, 0);
-  });
+      await AddEditNoteScreenRobot.launch(
+        tester,
+        bloc: mockBloc,
+        onSaved: () {
+          onSavedCounter++;
+        },
+        onBack: () {
+          onBackCounter++;
+        },
+      );
 
-  testWidgets('should prepare a new form and create a note', (tester) async {
-    whenListen<AddEditNoteState>(
-      mockBloc,
-      Stream.fromIterable([AddEditNoteInitialState(loading: false)]),
-      initialState: AddEditNoteInitialState(),
-    );
+      AddEditNoteScreenRobot.expectScreenVisible();
 
-    await AddEditNoteScreenRobot.launch(
-      tester,
-      bloc: mockBloc,
-      onSaved: _onSaved,
-      onBack: _onBack,
-    );
+      expect(onSavedCounter, 0);
+      expect(onBackCounter, 0);
+    });
 
-    AddEditNoteScreenRobot.expectScreenVisible();
+    testWidgets('should load existing note and update it', (tester) async {
+      final mockBloc = MockAddEditNoteBloc();
+      final note = fakeNote;
+      var onSavedCounter = 0, onBackCounter = 0;
 
-    expect(onSavedCounter, 0);
-    expect(onBackCounter, 0);
-  });
+      whenListen<AddEditNoteState>(
+        mockBloc,
+        Stream.fromIterable([AddEditNoteLoadedState(note: note)]),
+        initialState: AddEditNoteInitialState(),
+      );
 
-  testWidgets('should load existing note and update it', (tester) async {
-    whenListen<AddEditNoteState>(
-      mockBloc,
-      Stream.fromIterable([AddEditNoteLoadedState(note: note)]),
-      initialState: AddEditNoteInitialState(),
-    );
+      await AddEditNoteScreenRobot.launch(
+        tester,
+        bloc: mockBloc,
+        onSaved: () {
+          onSavedCounter++;
+        },
+        onBack: () {
+          onBackCounter++;
+        },
+      );
 
-    await AddEditNoteScreenRobot.launch(
-      tester,
-      bloc: mockBloc,
-      onSaved: _onSaved,
-      onBack: _onBack,
-    );
+      AddEditNoteScreenRobot.expectScreenVisible(note: note);
 
-    AddEditNoteScreenRobot.expectScreenVisible(note: note);
+      expect(onSavedCounter, 0);
+      expect(onBackCounter, 0);
+    });
 
-    expect(onSavedCounter, 0);
-    expect(onBackCounter, 0);
+    testWidgets('should display error with note', (tester) async {
+      final mockBloc = MockAddEditNoteBloc();
+      final note = fakeNote;
+      var onSavedCounter = 0, onBackCounter = 0;
+
+      whenListen<AddEditNoteState>(
+        mockBloc,
+        Stream.fromIterable([AddEditNoteErrorState(note: note)]),
+        initialState: AddEditNoteInitialState(),
+      );
+
+      await AddEditNoteScreenRobot.launch(
+        tester,
+        bloc: mockBloc,
+        onSaved: () {
+          onSavedCounter++;
+        },
+        onBack: () {
+          onBackCounter++;
+        },
+      );
+      await tester.pumpAndSettle();
+
+      AddEditNoteScreenRobot.expectScreenErrorVisible();
+
+      expect(onSavedCounter, 0);
+      expect(onBackCounter, 0);
+    });
+
+    testWidgets('should display error without note', (tester) async {
+      final mockBloc = MockAddEditNoteBloc();
+      var onSavedCounter = 0, onBackCounter = 0;
+
+      whenListen<AddEditNoteState>(
+        mockBloc,
+        Stream.fromIterable([AddEditNoteErrorState()]),
+        initialState: AddEditNoteInitialState(),
+      );
+
+      await AddEditNoteScreenRobot.launch(
+        tester,
+        bloc: mockBloc,
+        onSaved: () {
+          onSavedCounter++;
+        },
+        onBack: () {
+          onBackCounter++;
+        },
+      );
+      await tester.pumpAndSettle();
+
+      AddEditNoteScreenRobot.expectScreenVisible();
+      AddEditNoteScreenRobot.expectScreenErrorVisible();
+
+      expect(onSavedCounter, 0);
+      expect(onBackCounter, 0);
+    });
   });
 }
