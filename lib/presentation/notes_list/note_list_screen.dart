@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app.dart';
+import '../shared/widgets/app_bar_loading.dart';
 import '../shared/widgets/bottom_sheet.dart';
 import 'bloc/note_list_bloc.dart';
 import 'note_list_strings.dart';
@@ -69,16 +70,7 @@ extension NotesListStateToWidget on NoteListState {
         centerTitle: true,
         actions: [
           Visibility(
-            child: Center(
-              child: SizedBox(
-                child: CircularProgressIndicator(
-                  strokeWidth: 3.0,
-                  valueColor: AlwaysStoppedAnimation(Colors.white),
-                ),
-                height: 20.0,
-                width: 20.0,
-              ),
-            ),
+            child: const AppBarLoading(),
             visible: loading,
           ),
           SizedBox(width: 16),
@@ -86,13 +78,13 @@ extension NotesListStateToWidget on NoteListState {
       ),
       body: SafeArea(child: body),
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
         onPressed: () async {
           final result = await onAddNewNote();
           if (result == true) {
             context.read<NoteListBloc>().add(const NoteListLoadEvent());
           }
         },
-        child: Icon(Icons.add),
       ),
     );
   }

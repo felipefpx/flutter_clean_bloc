@@ -178,8 +178,36 @@ void main() {
 
       AddEditNoteScreenRobot.expectScreenVisible();
       AddEditNoteScreenRobot.expectScreenErrorVisible();
+      await AddEditNoteScreenRobot.tapOnCloseError(tester);
 
       expect(onSavedCounter, 0);
+      expect(onBackCounter, 1);
+    });
+
+    testWidgets('should run saved callback when saved a note', (tester) async {
+      final mockBloc = MockAddEditNoteBloc();
+      final note = fakeNote;
+      var onSavedCounter = 0, onBackCounter = 0;
+
+      whenListen<AddEditNoteState>(
+        mockBloc,
+        Stream.fromIterable([AddEditNoteSavedState(note: note)]),
+        initialState: AddEditNoteInitialState(),
+      );
+
+      await AddEditNoteScreenRobot.launch(
+        tester,
+        bloc: mockBloc,
+        onSaved: () {
+          onSavedCounter++;
+        },
+        onBack: () {
+          onBackCounter++;
+        },
+      );
+      await tester.pumpAndSettle();
+
+      expect(onSavedCounter, 1);
       expect(onBackCounter, 0);
     });
   });

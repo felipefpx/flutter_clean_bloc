@@ -5,7 +5,9 @@ import 'package:flutter_clean_bloc/domain/models/note.dart';
 import 'package:flutter_clean_bloc/presentation/notes_list/bloc/note_list_bloc.dart';
 import 'package:flutter_clean_bloc/presentation/notes_list/note_list_screen.dart';
 import 'package:flutter_clean_bloc/presentation/notes_list/note_list_strings.dart';
+import 'package:flutter_clean_bloc/presentation/notes_list/views/note_list_empty_view.dart';
 import 'package:flutter_clean_bloc/presentation/notes_list/views/note_list_shimmering_view.dart';
+import 'package:flutter_clean_bloc/presentation/shared/widgets/app_bar_loading.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class NoteListScreenRobot {
@@ -17,6 +19,7 @@ class NoteListScreenRobot {
     required Future<Object?> Function() onAddNewNote,
     required Future<Object?> Function(String) onEditNote,
     required VoidCallback onBack,
+    bool awaitSettled = false,
   }) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -30,7 +33,11 @@ class NoteListScreenRobot {
         ),
       ),
     );
-    await tester.pump();
+    if (!awaitSettled) {
+      await tester.pump();
+    } else {
+      await tester.pumpAndSettle();
+    }
   }
 
   static void expectScreenVisible({
@@ -39,7 +46,7 @@ class NoteListScreenRobot {
     bool shimmering = false,
   }) {
     expect(
-      find.byType(CircularProgressIndicator),
+      find.byType(AppBarLoading),
       loading ? findsOneWidget : findsNothing,
     );
 
@@ -54,11 +61,15 @@ class NoteListScreenRobot {
     );
 
     if (!shimmering) {
-      for (var note in notes) {
-        expect(
-          _findNoteTile(note),
-          findsOneWidget,
-        );
+      if (notes.isEmpty) {
+        expect(find.byType(NoteListEmptyView), findsOneWidget);
+      } else {
+        for (var note in notes) {
+          expect(
+            _findNoteTile(note),
+            findsOneWidget,
+          );
+        }
       }
     }
   }
@@ -84,6 +95,11 @@ class NoteListScreenRobot {
     await tester.pumpAndSettle();
   }
 
+  static Future<void> tapOnAdd(WidgetTester tester) async {
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pumpAndSettle();
+  }
+
   static Future<void> tapOnEdit(WidgetTester tester, Note note) async {
     await tester.tap(_findNoteTile(note));
     await tester.pumpAndSettle();
@@ -97,7 +113,8 @@ class NoteListScreenRobot {
   static Finder _findNoteTile(Note note) => find.byWidgetPredicate(
         (widget) =>
             widget is ListTile &&
-            (widget.trailing as Icon).icon == Icons.delete &&
+            ((widget.trailing as IconButton).icon as Icon).icon ==
+                Icons.delete &&
             (widget.title as Text).data == note.title,
       );
 }

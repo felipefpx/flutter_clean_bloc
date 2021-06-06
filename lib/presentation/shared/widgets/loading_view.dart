@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LoadingWidget extends StatelessWidget {
+class LoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(

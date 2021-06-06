@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app.dart';
 import '../shared/widgets/bottom_sheet.dart';
-import '../shared/widgets/loading_widget.dart';
+import '../shared/widgets/loading_view.dart';
 import 'add_edit_note_strings.dart';
 import 'bloc/add_edit_note_bloc.dart';
 
@@ -59,7 +59,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
             centerTitle: true,
           ),
           body: state.loading
-              ? LoadingWidget()
+              ? LoadingView()
               : Padding(
                   padding: EdgeInsets.all(16),
                   child: Column(
