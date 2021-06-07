@@ -2,6 +2,8 @@
 
 This repository contains a simple example of a Flutter project with a simple Clean Architecture with BloC pattern.
 
+![Architecture Overview](arch_overview.jpg)
+
 ## Dependencies
 
 - [equatable](https://pub.dev/packages/equatable): A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode;

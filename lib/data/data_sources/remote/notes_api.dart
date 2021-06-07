@@ -8,13 +8,20 @@ import 'remote_notes_data_source.dart';
 class NotesApi implements NotesRemoteDataSource {
   NotesApi({required http.Client httpClient}) : _httpClient = httpClient;
 
-  static const apiBaseUrl = 'http://127.0.0.1:8080';
+  static const apiBaseUrl = 'http://localhost:5000/api/v1';
+  static const defaultHeaders = <String, String>{
+    'content-type': 'application/json',
+    'accept': 'application/json',
+  };
 
   final http.Client _httpClient;
 
   @override
   Future<List<ExternalNote>> getNotes() => _httpClient
-      .get(Uri.parse('$apiBaseUrl/notes'))
+      .get(
+        Uri.parse('$apiBaseUrl/notes'),
+        headers: defaultHeaders,
+      )
       .then((response) => jsonDecode(response.body))
       .then(
         (json) async => (json as List<dynamic>)
@@ -30,6 +37,7 @@ class NotesApi implements NotesRemoteDataSource {
       _httpClient
           .post(
             Uri.parse('$apiBaseUrl/notes'),
+            headers: defaultHeaders,
             body: jsonEncode(
               {
                 'title': title,
@@ -42,7 +50,10 @@ class NotesApi implements NotesRemoteDataSource {
 
   @override
   Future<ExternalNote> getNote(String id) => _httpClient
-      .get(Uri.parse('$apiBaseUrl/notes/$id'))
+      .get(
+        Uri.parse('$apiBaseUrl/notes/$id'),
+        headers: defaultHeaders,
+      )
       .then((response) => jsonDecode(response.body))
       .then((json) => ExternalNote.fromJson(json));
 
@@ -55,6 +66,7 @@ class NotesApi implements NotesRemoteDataSource {
       _httpClient
           .put(
             Uri.parse('$apiBaseUrl/notes/$id'),
+            headers: defaultHeaders,
             body: jsonEncode(
               {
                 'title': title,
@@ -66,6 +78,8 @@ class NotesApi implements NotesRemoteDataSource {
           .then((json) => ExternalNote.fromJson(json));
 
   @override
-  Future<void> deleteNote(String id) =>
-      _httpClient.delete(Uri.parse('$apiBaseUrl/notes/$id'));
+  Future<void> deleteNote(String id) => _httpClient.delete(
+        Uri.parse('$apiBaseUrl/notes/$id'),
+        headers: defaultHeaders,
+      );
 }

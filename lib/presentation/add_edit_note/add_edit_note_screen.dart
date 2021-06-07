@@ -93,6 +93,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
           floatingActionButton: state is AddEditNoteLoadingState
               ? null
               : FloatingActionButton(
+                  key: const Key('save_note'),
                   child: Icon(Icons.save),
                   onPressed: () {
                     context.read<AddEditNoteBloc>().add(AddEditNoteSubmitEvent(

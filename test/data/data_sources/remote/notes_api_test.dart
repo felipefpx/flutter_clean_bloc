@@ -40,16 +40,20 @@ void main() {
     });
 
     test('to get the notes, assert success', () async {
-      when(() => httpClient.get(Uri.parse('${NotesApi.apiBaseUrl}/notes')))
-          .thenAnswer((_) async => fakeResponse('[$externalNoteJson]', 200));
+      when(() => httpClient.get(
+            Uri.parse('${NotesApi.apiBaseUrl}/notes'),
+            headers: NotesApi.defaultHeaders,
+          )).thenAnswer((_) async => fakeResponse('[$externalNoteJson]', 200));
 
       final result = await notesRemoteDs.getNotes();
       expect(result, [externalNote]);
     });
 
     test('to getting a note, assert success', () async {
-      when(() => httpClient.get(Uri.parse('${NotesApi.apiBaseUrl}/notes/$id')))
-          .thenAnswer((_) async => fakeResponse(externalNoteJson, 200));
+      when(() => httpClient.get(
+            Uri.parse('${NotesApi.apiBaseUrl}/notes/$id'),
+            headers: NotesApi.defaultHeaders,
+          )).thenAnswer((_) async => fakeResponse(externalNoteJson, 200));
 
       final result = await notesRemoteDs.getNote(id);
       expect(result, externalNote);
@@ -59,6 +63,7 @@ void main() {
       when(
         () => httpClient.post(
           Uri.parse('${NotesApi.apiBaseUrl}/notes'),
+          headers: NotesApi.defaultHeaders,
           body: jsonEncode({
             'title': title,
             'content': content,
@@ -77,6 +82,7 @@ void main() {
       when(
         () => httpClient.put(
           Uri.parse('${NotesApi.apiBaseUrl}/notes/$id'),
+          headers: NotesApi.defaultHeaders,
           body: jsonEncode({
             'title': title,
             'content': content,
@@ -96,12 +102,15 @@ void main() {
       when(
         () => httpClient.delete(
           Uri.parse('${NotesApi.apiBaseUrl}/notes/$id'),
+          headers: NotesApi.defaultHeaders,
         ),
       ).thenAnswer((_) async => fakeResponse(externalNoteJson, 200));
 
       await notesRemoteDs.deleteNote(id);
-      verify(() =>
-          httpClient.delete(Uri.parse('${NotesApi.apiBaseUrl}/notes/$id')));
+      verify(() => httpClient.delete(
+            Uri.parse('${NotesApi.apiBaseUrl}/notes/$id'),
+            headers: NotesApi.defaultHeaders,
+          ));
     });
   });
 }

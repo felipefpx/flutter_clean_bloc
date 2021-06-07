@@ -78,6 +78,7 @@ extension NotesListStateToWidget on NoteListState {
       ),
       body: SafeArea(child: body),
       floatingActionButton: FloatingActionButton(
+        key: const Key('add_note'),
         child: Icon(Icons.add),
         onPressed: () async {
           final result = await onAddNewNote();
