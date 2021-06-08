@@ -8,7 +8,7 @@ class NotesRepository extends NotesUseCases {
   NotesRepository({
     required NotesRemoteDataSource notesRemoteDataSource,
     required NotesLocalDataSource notesLocalDataSource,
-  })   : _notesRemoteDataSource = notesRemoteDataSource,
+  })  : _notesRemoteDataSource = notesRemoteDataSource,
         _notesLocalDataSource = notesLocalDataSource;
 
   final NotesRemoteDataSource _notesRemoteDataSource;

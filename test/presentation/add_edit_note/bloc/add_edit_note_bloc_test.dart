@@ -3,6 +3,7 @@ import 'package:flutter_clean_bloc/domain/models/note.dart';
 import 'package:flutter_clean_bloc/domain/use_cases/notes_use_cases.dart';
 import 'package:flutter_clean_bloc/presentation/add_edit_note/bloc/add_edit_note_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../fakes.dart';
 import '../../mocks.dart';
