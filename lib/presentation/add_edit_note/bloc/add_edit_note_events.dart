@@ -19,8 +19,10 @@ class AddEditNoteLoadEvent extends AddEditNoteEvent {
         yield AddEditNoteLoadedState(note: result);
       } catch (e) {
         debugPrint(e.toString());
-        yield AddEditNoteErrorState(onRetry: () => bloc.add(this));
+        yield AddEditNoteErrorState();
       }
+    } else {
+      yield AddEditNoteInitialState(loading: false);
     }
   }
 }
@@ -39,6 +41,7 @@ class AddEditNoteSubmitEvent extends AddEditNoteEvent {
   Stream<AddEditNoteState> apply(AddEditNoteBloc bloc) async* {
     final isTitleValid = title.isNotEmpty;
     final isContentValid = content.isNotEmpty;
+
     if (!isTitleValid || !isContentValid) {
       yield AddEditNoteInvalidInfoState(
         note: bloc.state.note,
@@ -49,23 +52,23 @@ class AddEditNoteSubmitEvent extends AddEditNoteEvent {
       yield AddEditNoteLoadingState(note: bloc.state.note);
 
       try {
+        Note result;
         if (id != null) {
-          final result = await bloc._notesUseCases.updateNote(
+          result = await bloc._notesUseCases.updateNote(
             id: id!,
             title: title,
             content: content,
           );
-          yield AddEditNoteSavedState(note: result);
         } else {
-          final result = await bloc._notesUseCases.createNote(
+          result = await bloc._notesUseCases.createNote(
             title: title,
             content: content,
           );
-          yield AddEditNoteSavedState(note: result);
         }
+        yield AddEditNoteSavedState(note: result);
       } catch (e) {
         debugPrint(e.toString());
-        yield AddEditNoteErrorState(onRetry: () => bloc.add(this));
+        yield AddEditNoteErrorState();
       }
     }
   }

@@ -11,7 +11,8 @@ abstract class AddEditNoteState extends BaseState {
 }
 
 class AddEditNoteInitialState extends AddEditNoteState {
-  const AddEditNoteInitialState() : super(loading: true);
+  const AddEditNoteInitialState({bool loading = true})
+      : super(loading: loading);
 }
 
 class AddEditNoteLoadingState extends AddEditNoteState {
@@ -31,9 +32,9 @@ class AddEditNoteSavedState extends AddEditNoteState {
 
 class AddEditNoteInvalidInfoState extends AddEditNoteState {
   const AddEditNoteInvalidInfoState({
-    required Note? note,
     required this.invalidTitle,
     required this.invalidContent,
+    Note? note,
   }) : super(loading: false, note: note);
 
   final bool invalidTitle, invalidContent;
@@ -47,8 +48,5 @@ class AddEditNoteInvalidInfoState extends AddEditNoteState {
 }
 
 class AddEditNoteErrorState extends AddEditNoteState {
-  const AddEditNoteErrorState({Note? note, this.onRetry})
-      : super(loading: false, note: note);
-
-  final VoidCallback? onRetry;
+  const AddEditNoteErrorState({Note? note}) : super(loading: false, note: note);
 }

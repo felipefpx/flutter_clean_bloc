@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app.dart';
+import '../shared/widgets/bottom_sheet.dart';
+import '../shared/widgets/loading_view.dart';
 import 'add_edit_note_strings.dart';
 import 'bloc/add_edit_note_bloc.dart';
 
 class AddEditNoteScreen extends StatefulWidget {
-  const AddEditNoteScreen({required this.onSaved});
+  const AddEditNoteScreen({
+    required this.onSaved,
+    required this.onBack,
+  });
 
-  final VoidCallback onSaved;
+  final VoidCallback onSaved, onBack;
 
   @override
   State<StatefulWidget> createState() => _AddEditNoteScreenState();
@@ -20,14 +25,23 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AddEditNoteBloc, AddEditNoteState>(
-      listener: (context, state) {
+    return BlocConsumer<AddEditNoteBloc, AddEditNoteState>(
+      listener: (context, state) async {
         if (state is AddEditNoteSavedState) {
           widget.onSaved();
         }
+
+        if (state is AddEditNoteErrorState) {
+          await BottomSheetWidget.show(
+            title: addEditNoteErrorTitle,
+            message: addEditNoteErrorMessage,
+            actionLabel: addEditNoteErrorAction,
+            context: context,
+          );
+          widget.onBack();
+        }
       },
-      child: BlocBuilder<AddEditNoteBloc, AddEditNoteState>(
-          builder: (context, state) {
+      builder: (context, state) {
         if (state is AddEditNoteLoadedState && state.note != null) {
           _titleTextController.text = state.note!.title;
           _contentTextController.text = state.note!.content;
@@ -42,15 +56,10 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
                       ? addEditNoteEditTitle
                       : addEditNoteAddTitle,
             ),
+            centerTitle: true,
           ),
           body: state.loading
-              ? Center(
-                  child: SizedBox(
-                    height: 48,
-                    width: 48,
-                    child: CircularProgressIndicator(),
-                  ),
-                )
+              ? LoadingView()
               : Padding(
                   padding: EdgeInsets.all(16),
                   child: Column(
@@ -84,6 +93,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
           floatingActionButton: state is AddEditNoteLoadingState
               ? null
               : FloatingActionButton(
+                  key: const Key('save_note'),
                   child: Icon(Icons.save),
                   onPressed: () {
                     context.read<AddEditNoteBloc>().add(AddEditNoteSubmitEvent(
@@ -94,7 +104,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
                   },
                 ),
         );
-      }),
+      },
     );
   }
 

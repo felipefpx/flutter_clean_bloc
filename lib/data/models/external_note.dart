@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/models/note.dart';
@@ -5,8 +6,8 @@ import '../../domain/models/note.dart';
 part 'external_note.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class ExternalNote {
-  ExternalNote({
+class ExternalNote extends Equatable {
+  const ExternalNote({
     required this.id,
     required this.title,
     required this.content,
@@ -19,6 +20,9 @@ class ExternalNote {
 
   @JsonKey()
   final String id, title, content;
+
+  @override
+  List<Object?> get props => [id, title, content];
 }
 
 extension ExternalNoteMapper on ExternalNote {

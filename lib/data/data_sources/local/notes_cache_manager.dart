@@ -1,12 +1,5 @@
-import '../models/external_note.dart';
-
-abstract class NotesLocalDataSource {
-  Future<List<ExternalNote>> getNotes();
-  Future<ExternalNote> getNote(String id);
-  Future<List<ExternalNote>> saveNotes(List<ExternalNote> notes);
-}
-
-class LocalNotesCacheIsEmpty implements Exception {}
+import '../../models/external_note.dart';
+import 'local_notes_data_source.dart';
 
 class NotesCacheManager implements NotesLocalDataSource {
   List<ExternalNote>? _notes;
