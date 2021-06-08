@@ -2,20 +2,12 @@
 
 This repository contains a simple example of a Flutter project with a simple Clean Architecture with BloC pattern.
 
----
-
 ## How to run
-
----
 
 This project is prepared to consume [this API](https://github.com/felipefpx/notes_api_ktor) locally hosted.
 With the API running, it is possible to run the flutter project by running `$ flutter run`.
 
----
-
 ## Flutter Project
-
----
 
 ### Generate code coverage report
 
