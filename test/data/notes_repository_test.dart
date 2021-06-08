@@ -1,9 +1,9 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_clean_bloc/data/data_sources/local/local_notes_data_source.dart';
 import 'package:flutter_clean_bloc/data/data_sources/remote/remote_notes_data_source.dart';
 import 'package:flutter_clean_bloc/data/models/external_note.dart';
 import 'package:flutter_clean_bloc/data/notes_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../fakes.dart';
 
