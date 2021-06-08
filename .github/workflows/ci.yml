@@ -24,7 +24,7 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter analyze
-      - run: flutter format lib/ test/ && git diff
+      - run: flutter format --dry-run --set-exit-if-changed lib/ test/
       - run: flutter test --coverage --machine > test-results.json
       - uses: dorny/test-reporter@v1.4.2
         with:
