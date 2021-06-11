@@ -9,11 +9,6 @@ With the API running, it is possible to run the flutter project by running `$ fl
 
 ## Flutter Project
 
-### Generate code coverage report
-
-- **Required**: install the LCov for your operating system (ex: run `$ brew install lcov` on mac);
-- Run this command to generate the html coverage: `$ flutter test --coverage && genhtml -o coverage coverage/lcov.info`
-
 ### Dependencies
 
 - [equatable](https://pub.dev/packages/equatable): A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode;
@@ -31,6 +26,13 @@ With the API running, it is possible to run the flutter project by running `$ fl
 - [effective_dart](https://pub.dev/packages/effective_dart): Linter rules corresponding to the guidelines in Effective Dart;
 - [json_serializable](https://pub.dev/packages/json_serializable): Automatically generate code for converting to and from JSON by annotating Dart classes;
 - [mocktail](https://pub.dev/packages/mocktail): A Dart mock library which simplifies mocking with null safety support and no manual mocks or code generation;
+
+### Generate code coverage report
+
+- **Required**: install the LCov for your operating system (ex: run `$ brew install lcov` on mac);
+- Run this command to generate the html coverage: `$ flutter test --coverage && genhtml -o coverage coverage/lcov.info`
+
+![Coverage preview](coverage_preview.png)
 
 ### Architecture Overview
 
