@@ -92,7 +92,7 @@ class NoteListScreenRobot {
         matching: find.byIcon(Icons.delete),
       ),
     );
-    await tester.pumpAndSettle();
+    await tester.pump();
   }
 
   static Future<void> tapOnAdd(WidgetTester tester) async {

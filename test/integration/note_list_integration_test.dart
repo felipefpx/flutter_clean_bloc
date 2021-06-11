@@ -21,6 +21,13 @@ void main() {
   group('When the app', () {
     setUp(() {
       httpClient = MockHttpClient();
+
+      when(
+        () => httpClient.get(
+          Uri.parse('${NotesApi.apiBaseUrl}/notes'),
+          headers: NotesApi.defaultHeaders,
+        ),
+      ).thenAnswer((_) async => fakeResponse(jsonEncode(externalNotes), 200));
     });
 
     tearDown(() {
@@ -30,12 +37,39 @@ void main() {
     testWidgets(
       'loads the notes, assert notes displayed',
       (tester) async {
+        await launchApp(tester, httpClient);
+
+        NoteListScreenRobot.expectScreenVisible(
+          loading: true,
+          shimmering: true,
+        );
+
+        await tester.pump();
+
+        NoteListScreenRobot.expectScreenVisible(
+          loading: true,
+          shimmering: false,
+          notes: getNotes(),
+        );
+
+        await tester.pump();
+
+        NoteListScreenRobot.expectScreenVisible(
+          loading: true,
+          notes: getNotes(),
+        );
+      },
+    );
+
+    testWidgets(
+      'loads the notes and tap to remove a note, assert notes removed',
+      (tester) async {
         when(
-          () => httpClient.get(
-            Uri.parse('${NotesApi.apiBaseUrl}/notes'),
+          () => httpClient.delete(
+            Uri.parse('${NotesApi.apiBaseUrl}/notes/${externalNotes.first.id}'),
             headers: NotesApi.defaultHeaders,
           ),
-        ).thenAnswer((_) async => fakeResponse(jsonEncode(externalNotes), 200));
+        ).thenAnswer((_) async => fakeResponse('{}', 200));
 
         await launchApp(tester, httpClient);
 
@@ -53,6 +87,13 @@ void main() {
         );
 
         await tester.pump();
+
+        NoteListScreenRobot.expectScreenVisible(
+          loading: true,
+          notes: getNotes(),
+        );
+
+        await NoteListScreenRobot.tapOnDelete(tester, getNotes().first);
 
         NoteListScreenRobot.expectScreenVisible(
           loading: true,
