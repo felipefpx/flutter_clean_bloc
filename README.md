@@ -9,10 +9,9 @@ With the API running, it is possible to run the flutter project by running `$ fl
 
 ## Flutter Project
 
-### Generate code coverage report
+### Architecture Overview
 
-- **Required**: install the LCov for your operating system (ex: run `$ brew install lcov` on mac);
-- Run this command to generate the html coverage: `$ flutter test --coverage && genhtml -o coverage coverage/lcov.info`
+<img src="arch_overview.jpg" style="max-width: 400px;"/>
 
 ### Dependencies
 
@@ -32,6 +31,9 @@ With the API running, it is possible to run the flutter project by running `$ fl
 - [json_serializable](https://pub.dev/packages/json_serializable): Automatically generate code for converting to and from JSON by annotating Dart classes;
 - [mocktail](https://pub.dev/packages/mocktail): A Dart mock library which simplifies mocking with null safety support and no manual mocks or code generation;
 
-### Architecture Overview
+### Generate code coverage report
 
-![Architecture Overview](arch_overview.jpg)
+- **Required**: install the LCov for your operating system (ex: run `$ brew install lcov` on mac);
+- Run this command to generate the html coverage: `$ flutter test --coverage && genhtml -o coverage coverage/lcov.info`
+
+<img src="coverage_preview.png" style="max-width: 600px;"/>

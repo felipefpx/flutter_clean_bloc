@@ -8,14 +8,19 @@ class NoteListLoadEvent extends NoteListEvent {
   const NoteListLoadEvent();
 
   @override
-  Stream<NoteListState> apply(NoteListBloc bloc) => bloc._notesUseCases
-      .getNotes()
-      .map<NoteListState>(
-        (notes) => NoteListLoadingState(notes: notes, shimmering: false),
-      )
-      .startWith(NoteListLoadingState())
-      .doOnDone(() => bloc.emit(NoteListLoadedState(notes: bloc.state.notes)))
-      .onErrorReturn(NoteListErrorState(notes: bloc.state.notes));
+  Stream<NoteListState> apply(NoteListBloc bloc) async* {
+    yield* bloc._notesUseCases
+        .getNotes()
+        .map<NoteListState>(
+          (notes) => NoteListLoadingState(notes: notes, shimmering: false),
+        )
+        .startWith(NoteListLoadingState())
+        .onErrorReturn(NoteListErrorState(notes: bloc.state.notes));
+
+    if (bloc.state is! NoteListErrorState) {
+      yield NoteListLoadedState(notes: bloc.state.notes);
+    }
+  }
 }
 
 class DeleteNoteEvent extends NoteListEvent {

@@ -9,7 +9,6 @@ import 'data_sources/remote/remote_notes_data_source.dart';
 import 'notes_repository.dart';
 
 List<InheritedProvider> get dataProviders => [
-      Provider<http.Client>(create: (_) => http.Client()),
       ProxyProvider<http.Client, NotesRemoteDataSource>(
         update: (_, httpClient, __) => NotesApi(httpClient: httpClient),
       ),
