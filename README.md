@@ -9,6 +9,10 @@ With the API running, it is possible to run the flutter project by running `$ fl
 
 ## Flutter Project
 
+### Architecture Overview
+
+<img src="arch_overview.jpg" style="max-width: 400px;"/>
+
 ### Dependencies
 
 - [equatable](https://pub.dev/packages/equatable): A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode;
@@ -32,8 +36,4 @@ With the API running, it is possible to run the flutter project by running `$ fl
 - **Required**: install the LCov for your operating system (ex: run `$ brew install lcov` on mac);
 - Run this command to generate the html coverage: `$ flutter test --coverage && genhtml -o coverage coverage/lcov.info`
 
-![Coverage preview](coverage_preview.png)
-
-### Architecture Overview
-
-![Architecture Overview](arch_overview.jpg)
+<img src="coverage_preview.png" style="max-width: 600px;"/>
