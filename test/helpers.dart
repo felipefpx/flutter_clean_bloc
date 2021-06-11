@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_clean_bloc/app.dart';
 import 'package:flutter_clean_bloc/domain/use_cases/notes_use_cases.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
 import 'package:nuvigator/next.dart';
 import 'package:provider/provider.dart';
+
+Future<void> launchApp(WidgetTester tester, http.Client httpClient) async {
+  await tester.pumpWidget(App(httpClient: httpClient));
+  await tester.pump();
+}
 
 Future<void> launchRoutes(
   WidgetTester tester,

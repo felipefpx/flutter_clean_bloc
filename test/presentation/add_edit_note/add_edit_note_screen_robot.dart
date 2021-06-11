@@ -99,27 +99,39 @@ class AddEditNoteScreenRobot {
   }
 
   static Future<void> typeTitle(WidgetTester tester, String title) async {
-    await tester.enterText(find.text(addEditNoteTitleHint), title);
+    await tester.enterText(
+      find.ancestor(
+        of: find.text(addEditNoteTitleHint),
+        matching: find.byType(TextFormField),
+      ),
+      title,
+    );
     await tester.pumpAndSettle();
   }
 
   static Future<void> typeContent(WidgetTester tester, String content) async {
-    await tester.enterText(find.text(addEditNoteContentHint), content);
+    await tester.enterText(
+      find.ancestor(
+        of: find.text(addEditNoteContentHint),
+        matching: find.byType(TextFormField),
+      ),
+      content,
+    );
     await tester.pumpAndSettle();
   }
 
   static Future<void> tapOnBack(WidgetTester tester) async {
     await tester.tap(find.byType(BackButton));
-    await tester.pumpAndSettle();
+    await tester.pump();
   }
 
   static Future<void> tapOnSave(WidgetTester tester) async {
     await tester.tap(find.byIcon(Icons.save));
-    await tester.pumpAndSettle();
+    await tester.pump();
   }
 
   static Future<void> tapOnCloseError(WidgetTester tester) async {
-    await tester.tap(find.text(addEditNoteErrorAction));
+    await tester.tap(find.text(addEditNoteErrorAction), warnIfMissed: false);
     await tester.pumpAndSettle();
   }
 }

@@ -106,7 +106,7 @@ class NoteListScreenRobot {
   }
 
   static Future<void> tapOnCloseError(WidgetTester tester) async {
-    await tester.tap(find.text(noteListErrorAction));
+    await tester.tap(find.text(noteListErrorAction), warnIfMissed: false);
     await tester.pumpAndSettle();
   }
 

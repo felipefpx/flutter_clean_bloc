@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:nuvigator/next.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +10,10 @@ import 'presentation/note_list/note_list_route.dart';
 const appName = 'Flutter Clean-BloC';
 
 class App extends StatelessWidget {
+  App({http.Client? httpClient}) : _httpClient = httpClient ?? http.Client();
+
+  final http.Client _httpClient;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,6 +23,7 @@ class App extends StatelessWidget {
       ),
       home: MultiProvider(
         providers: [
+          Provider<http.Client>(create: (_) => _httpClient),
           ...dataProviders,
         ],
         child: Nuvigator.routes(
