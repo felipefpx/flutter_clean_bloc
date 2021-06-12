@@ -6,8 +6,9 @@ class BottomSheetWidget extends StatelessWidget {
     required this.title,
     required this.message,
     required this.actionLabel,
+    Key? key,
     this.onActionPressed,
-  });
+  }) : super(key: key);
 
   final String title, message, actionLabel;
   final VoidCallback? onActionPressed;

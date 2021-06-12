@@ -15,7 +15,8 @@ class NoteListScreen extends StatelessWidget {
     required this.onAddNewNote,
     required this.onEditNote,
     required this.onBack,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final VoidCallback onBack;
   final Future<Object?>? Function() onAddNewNote;
@@ -39,7 +40,15 @@ class NoteListScreen extends StatelessWidget {
       builder: (context, state) => state.toWidget(
         context: context,
         onAddNewNote: onAddNewNote,
-        onEditNote: onEditNote,
+        onDeleteNote: (noteId) {
+          context.read<NoteListBloc>().add(DeleteNoteEvent(noteId));
+        },
+        onEditNote: (noteId) async {
+          final result = await onEditNote(noteId);
+          if (result == true) {
+            context.read<NoteListBloc>().add(const NoteListLoadEvent());
+          }
+        },
       ),
     );
   }
@@ -50,6 +59,7 @@ extension NotesListStateToWidget on NoteListState {
     required BuildContext context,
     required Future<Object?>? Function() onAddNewNote,
     required Future<Object?>? Function(String) onEditNote,
+    required void Function(String) onDeleteNote,
   }) {
     Widget body;
 
@@ -61,6 +71,7 @@ extension NotesListStateToWidget on NoteListState {
       body = NoteListView(
         notes: notes,
         onEditNote: onEditNote,
+        onDeleteNote: onDeleteNote,
       );
     }
 

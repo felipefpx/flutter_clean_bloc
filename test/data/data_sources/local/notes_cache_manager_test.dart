@@ -1,4 +1,5 @@
 import 'package:flutter_clean_bloc/data/data_sources/local/local_notes_data_source.dart';
+import 'package:flutter_clean_bloc/data/data_sources/local/local_notes_data_source_errors.dart';
 import 'package:flutter_clean_bloc/data/data_sources/local/notes_cache_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 

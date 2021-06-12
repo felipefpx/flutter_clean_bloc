@@ -5,7 +5,3 @@ abstract class NotesLocalDataSource {
   Future<ExternalNote> getNote(String id);
   Future<List<ExternalNote>> saveNotes(List<ExternalNote> notes);
 }
-
-class LocalNotesCacheIsEmpty implements Exception {
-  const LocalNotesCacheIsEmpty();
-}

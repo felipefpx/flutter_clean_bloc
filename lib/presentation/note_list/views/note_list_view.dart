@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../domain/models/note.dart';
-import '../bloc/note_list_bloc.dart';
 
 class NoteListView extends StatelessWidget {
   const NoteListView({
     required this.notes,
     required this.onEditNote,
-  });
+    required this.onDeleteNote,
+    Key? key,
+  }) : super(key: key);
 
   final Future<Object?>? Function(String) onEditNote;
+  final void Function(String) onDeleteNote;
   final List<Note> notes;
 
   @override
@@ -25,16 +26,9 @@ class NoteListView extends StatelessWidget {
               Icons.delete,
               color: Theme.of(context).accentColor,
             ),
-            onPressed: () {
-              context.read<NoteListBloc>().add(DeleteNoteEvent(note.id));
-            },
+            onPressed: () => onDeleteNote(note.id),
           ),
-          onTap: () async {
-            final result = await onEditNote(note.id);
-            if (result == true) {
-              context.read<NoteListBloc>().add(const NoteListLoadEvent());
-            }
-          },
+          onTap: () => onEditNote(note.id),
         );
       },
       itemCount: notes.length,

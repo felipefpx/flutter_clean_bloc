@@ -1,6 +1,7 @@
 import '../domain/models/note.dart';
 import '../domain/use_cases/notes_use_cases.dart';
 import 'data_sources/local/local_notes_data_source.dart';
+import 'data_sources/local/local_notes_data_source_errors.dart';
 import 'data_sources/remote/remote_notes_data_source.dart';
 import 'models/external_note.dart';
 

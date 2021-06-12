@@ -18,3 +18,8 @@ abstract class NotesUseCases {
 
   Future<void> deleteNote(String noteId);
 }
+
+extension NoteInfoValidator on String {
+  bool get isValidTitle => isNotEmpty;
+  bool get isValidContent => isNotEmpty;
+}
