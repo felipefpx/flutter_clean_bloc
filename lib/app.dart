@@ -10,9 +10,12 @@ import 'presentation/note_list/note_list_route.dart';
 const appName = 'Flutter Clean-BloC';
 
 class App extends StatelessWidget {
-  App({http.Client? httpClient}) : _httpClient = httpClient ?? http.Client();
+  App({
+    Key? key,
+    required this.httpClient,
+  }) : super(key: key);
 
-  final http.Client _httpClient;
+  final http.Client httpClient;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class App extends StatelessWidget {
       ),
       home: MultiProvider(
         providers: [
-          Provider<http.Client>(create: (_) => _httpClient),
+          Provider<http.Client>(create: (_) => httpClient),
           ...dataProviders,
         ],
         child: Nuvigator.routes(

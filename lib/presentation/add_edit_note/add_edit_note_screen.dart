@@ -11,7 +11,8 @@ class AddEditNoteScreen extends StatefulWidget {
   const AddEditNoteScreen({
     required this.onSaved,
     required this.onBack,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final VoidCallback onSaved, onBack;
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NoteListShimmeringView extends StatelessWidget {
-  const NoteListShimmeringView();
+  const NoteListShimmeringView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

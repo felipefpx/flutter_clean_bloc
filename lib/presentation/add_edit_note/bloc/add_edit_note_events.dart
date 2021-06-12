@@ -39,8 +39,8 @@ class AddEditNoteSubmitEvent extends AddEditNoteEvent {
 
   @override
   Stream<AddEditNoteState> apply(AddEditNoteBloc bloc) async* {
-    final isTitleValid = title.isNotEmpty;
-    final isContentValid = content.isNotEmpty;
+    final isTitleValid = title.isValidTitle;
+    final isContentValid = content.isValidContent;
 
     if (!isTitleValid || !isContentValid) {
       yield AddEditNoteInvalidInfoState(
